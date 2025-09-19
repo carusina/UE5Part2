@@ -5,10 +5,10 @@
 
 AABGameMode::AABGameMode()
 {
-	static ConstructorHelpers::FClassFinder<APawn> ThirdPersonClassRef(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter_C"));
-	if (ThirdPersonClassRef.Class)
+	static ConstructorHelpers::FClassFinder<APawn> DefaultPawnClassRef(TEXT("/Script/ArenaBattle.ABCharacterPlayer"));
+	if (DefaultPawnClassRef.Class)
 	{
-		DefaultPawnClass = ThirdPersonClassRef.Class;
+		DefaultPawnClass = DefaultPawnClassRef.Class;
 	}
 
 	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerClassRef(TEXT("/Script/ArenaBattle.ABPlayerController")); // Class 정보이기 때문에 _C 없이
