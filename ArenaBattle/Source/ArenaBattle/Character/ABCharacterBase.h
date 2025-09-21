@@ -39,6 +39,10 @@ public:
 	AABCharacterBase();
 
 	virtual void PostInitializeComponents() override;
+	
+	// Stat Section
+	int32 GetLevel();
+	void SetLevel(int32 NewInLevel);
 
 protected:
 	virtual void SetCharacterControlData(const class UABCharacterControlData* CharacterControlData);
