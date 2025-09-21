@@ -7,6 +7,8 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Physics/ABCollision.h"
 #include "Interface/ABCharacterItemInterface.h"
+#include "Engine/AssetManager.h"
+#include "ABItemData.h"
 
 // Sets default values
 AABItemBox::AABItemBox()
@@ -38,6 +40,26 @@ AABItemBox::AABItemBox()
 		Effect->bAutoActivate = false; // 바로 발동X
 	}
 
+}
+
+void AABItemBox::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	UAssetManager& Manager = UAssetManager::Get();
+
+	TArray<FPrimaryAssetId> Assets;
+	Manager.GetPrimaryAssetIdList(TEXT("ABItemData"), Assets); // AssetManager에서 우리가 지정한 폴더에 있는 ABItemData라는 Type을 가진 에셋들을 Assets에 가져옴
+	ensure(Assets.Num() > 0);
+
+	int32 RandomIndex = FMath::RandRange(0, Assets.Num() - 1);
+	FSoftObjectPtr AssetPtr(Manager.GetPrimaryAssetPath(Assets[RandomIndex]));
+	if (AssetPtr.IsPending())
+	{
+		AssetPtr.LoadSynchronous();
+	}
+	Item = Cast<UABItemData>(AssetPtr.Get());
+	ensure(Item);
 }
 
 void AABItemBox::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepHitResult)
