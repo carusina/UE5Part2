@@ -4,17 +4,30 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Interface/ABGameInterface.h"
 #include "ABGameMode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class ARENABATTLE_API AABGameMode : public AGameModeBase
+class ARENABATTLE_API AABGameMode : public AGameModeBase, public IABGameInterface
 {
 	GENERATED_BODY()
 	
 public:
 	AABGameMode();
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Game)
+	int32 ClearScore; // 게임 목표 점수
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Game)
+	int32 CurrentScore; // 게임 현재 점수
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Game)
+	uint8 bIsCleared : 1;
+
+	virtual void OnPlayerScoreChanged(int32 NewPlayerScore) override;
+	virtual void OnPlayerDead() override;
+	virtual bool IsGameCleared() override;
 };
